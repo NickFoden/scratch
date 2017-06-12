@@ -1,0 +1,14 @@
+{
+  "name": "scratch",
+  "version": "1.0.0",
+  "description": "Simple Knowledgebase App",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Nick Foden",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
