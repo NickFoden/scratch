@@ -1,7 +1,25 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/nodeScratch');
+let db = mongoose.connection;
+
+//Check Connection
+db.once('open', function(){
+	console.log('Connected to MongoDB');
+});
+
+//check for DB Errors
+db.on('error', function(){
+	console.log(err);
+});
+
 //Init App
 const app = express();
+
+//Bring in Models
+let Article = require('./models/article');
 
 //Load View Engine
 app.set('views', path.join(__dirname, 'views'));
@@ -9,29 +27,17 @@ app.set('view engine', 'pug')
 
 //Home Route
 app.get('/', function(req, res){
-	let articles = [
-	{
-		id:1,
-		title: 'Article One',
-		author: 'Santa Claus',
-		body: 'This is article 1'
-	},
-	{
-		id:2,
-		title: 'Article Two',
-		author: 'Santa Claus',
-		body: 'This is article 2'
-	},
-	{
-		id:3,
-		title: 'Article Three',
-		author: 'Santa Claus',
-		body: 'This is article 3'
-	}
-	];
-	res.render('index', {
-		title:'Articles'
+	Article.find({}, function(err, articles){
+		if(err){
+			console.log(err);
+		} else{
+			res.render('index', {
+				title:'Articles',
+				articles: articles
+			});
+		}	
 	});
+	
 } );
 
 //Add Route
